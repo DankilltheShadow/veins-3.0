@@ -32,7 +32,9 @@ network Scenario
         double playgroundSizeX @unit(m); // x size of the area the nodes are in (in meters)
         double playgroundSizeY @unit(m); // y size of the area the nodes are in (in meters)
         double playgroundSizeZ @unit(m); // z size of the area the nodes are in (in meters)
-        @display("bgb=$playgroundSizeX,$playgroundSizeY");
+        string bgf=default("gray");
+        double PpM=default(0.200);
+        @display("bgb=$playgroundSizeX,$playgroundSizeY;bgi=maps/$bgf;bgs=$PpM, m");
     submodules:
         obstacles: ObstacleControl {
             @display("p=240,50");

@@ -60,8 +60,8 @@ class LeachWaveApplLayer : public BaseApplLayer {
        int mySCH;
        int myId;
 
-       int nTurn=0;
-       bool nextCHTurn=false;
+       int nTurn;
+       bool nextCHTurn;
        double pCH;
        int P_fraz;
 

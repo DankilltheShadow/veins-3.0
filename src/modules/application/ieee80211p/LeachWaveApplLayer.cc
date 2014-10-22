@@ -26,7 +26,9 @@ void LeachWaveApplLayer::initialize(int stage) {
         dataOnSch = par("dataOnSch").boolValue();
         dataPriority = par("dataPriority").longValue();
 
-
+        //inizializzo a valore le variabili
+        nTurn=0;
+        nextCHTurn=false;
         //invia messaggio a se stesso per il timer dei turni
 
         T_Turn = new cMessage("Timer Turns", TIMER_TURN);
@@ -113,7 +115,9 @@ void LeachWaveApplLayer::handleLowerMsg(cMessage* msg) {
         }
     }
     if (std::string(wsm->getName()) == "ASSOCIATION_REQUEST") {
-        sendWSM( prepareWSM("ASSOCIATION_RESPONSE", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
+        if(wsm->getRecipientAddress()==myId){
+            sendWSM( prepareWSM("ASSOCIATION_RESPONSE", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
+        }
         //aggiungo il mittente alla liste dei miei ON
     }
 }
