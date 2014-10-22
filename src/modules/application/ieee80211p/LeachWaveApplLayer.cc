@@ -109,8 +109,8 @@ void LeachWaveApplLayer::handleLowerMsg(cMessage* msg) {
     if (std::string(wsm->getName()) == "CH_MESSAGE") {
         if( std::string(par("Car_State").stringValue())=="FN"){
             //divento suo ON e lo informo
-            sendWSM( prepareWSM("ASSOCIATION_REQUEST", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
             par("Car_State").setStringValue("ON");
+            sendWSM( prepareWSM("ASSOCIATION_REQUEST", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
             //aggiungo il mittente al mio CH
         }
     }
