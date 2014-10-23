@@ -64,6 +64,7 @@ class LeachWaveApplLayer : public BaseApplLayer {
        bool nextCHTurn;
        double pCH;
        int P_fraz;
+       std::vector<int> related;
 
 
        cMessage* T_Turn;

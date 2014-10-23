@@ -24,7 +24,14 @@ Define_Module(LeachTraCI11p);
 
 void LeachTraCI11p::initialize(int stage) {
     LeachWaveApplLayer::initialize(stage);
+    /*
+    std::vector<int> related; // holds result
 
+    const char *dist = par("related");
+    cStringTokenizer tokenizer(dist);
+    while (tokenizer.hasMoreTokens())
+        related.push_back(atoi(tokenizer.nextToken()));
+    */
 }
 
 void LeachTraCI11p::onBeacon(WaveShortMessage* wsm) {

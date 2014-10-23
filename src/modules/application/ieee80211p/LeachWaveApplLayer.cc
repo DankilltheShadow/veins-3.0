@@ -46,6 +46,7 @@ void LeachWaveApplLayer::initialize(int stage) {
 }
 
 void LeachWaveApplLayer::newTurn(){
+    related.clear();
     if(nTurn%P_fraz==0){
         nextCHTurn = false;
     }
@@ -110,16 +111,19 @@ void LeachWaveApplLayer::handleLowerMsg(cMessage* msg) {
         if( std::string(par("Car_State").stringValue())=="FN"){
             //divento suo ON e lo informo
             par("Car_State").setStringValue("ON");
-            sendWSM( prepareWSM("ASSOCIATION_REQUEST", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
             //aggiungo il mittente al mio CH
+            related.push_back(wsm->getSenderAddress());
+            sendWSM( prepareWSM("ASSOCIATION_REQUEST", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
         }
     }
     if (std::string(wsm->getName()) == "ASSOCIATION_REQUEST") {
         if(wsm->getRecipientAddress()==myId){
+            //aggiungo il mittente alla liste dei miei ON
+            related.push_back(wsm->getSenderAddress());
             sendWSM( prepareWSM("ASSOCIATION_RESPONSE", dataLengthBits, type_CCH, dataPriority, wsm->getSenderAddress(), 2) );
         }
-        //aggiungo il mittente alla liste dei miei ON
     }
+    delete msg;
 }
 
 void LeachWaveApplLayer::handleSelfMsg(cMessage* msg) {
