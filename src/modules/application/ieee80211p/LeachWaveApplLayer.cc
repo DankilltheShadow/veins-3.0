@@ -41,11 +41,21 @@ void LeachWaveApplLayer::initialize(int stage) {
 
         scheduleAt(simTime() + offSet, T_Turn);
 
+        numAssVector.setName("ON Associati");
+        numCH.setName("CH time");
+        int_numch=0;
+        numON.setName("ON time");
+        int_numon=0;
+        numFN.setName("FN time");
+        int_numfn=0;
+        numturn.setName("turn");
+
         newTurn();
     }
 }
 
 void LeachWaveApplLayer::newTurn(){
+    collectStatistics();
     related.clear();
     if(nTurn%P_fraz==0){
         nextCHTurn = false;
@@ -60,6 +70,21 @@ void LeachWaveApplLayer::newTurn(){
         par("Car_State").setStringValue("FN");
     }
     nTurn++;
+}
+
+void LeachWaveApplLayer::collectStatistics(){
+    if (simTime() >= simulation.getWarmupPeriod()){
+        if(std::string(par("Car_State").stringValue())=="CH") {
+            numAssVector.record(related.size());
+            int_numch++;
+        }else{
+            if(std::string(par("Car_State").stringValue())=="ON") {
+                int_numon++;
+            }else{
+                int_numfn++;
+            }
+        }
+    }
 }
 
 WaveShortMessage*  LeachWaveApplLayer::prepareWSM(std::string name, int lengthBits, t_channel channel, int priority, int rcvId, int serial) {
@@ -147,6 +172,11 @@ void LeachWaveApplLayer::sendWSM(WaveShortMessage* wsm) {
 }
 
 void LeachWaveApplLayer::finish() {
+    collectStatistics();
+    numCH.record(int_numch);
+    numON.record(int_numon);
+    numFN.record(int_numfn);
+    numturn.record(nTurn);
     if (T_Turn->isScheduled()) {
         cancelAndDelete(T_Turn);
     }
