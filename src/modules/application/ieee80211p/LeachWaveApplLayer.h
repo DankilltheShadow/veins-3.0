@@ -45,7 +45,7 @@ class LeachWaveApplLayer : public BaseApplLayer {
        virtual void handlePositionUpdate(cObject* obj);
 
        virtual void newTurn();
-       virtual void collectStatistics();
+       virtual void collectStatistics(int what);
 
     protected:
 
@@ -69,12 +69,9 @@ class LeachWaveApplLayer : public BaseApplLayer {
 
        cOutVector numAssVector;
        cOutVector numCH;
-       int int_numch;
        cOutVector numON;
-       int int_numon;
        cOutVector numFN;
-       int int_numfn;
-       cOutVector numturn;
+
 
        cMessage* T_Turn;
        cMessage* CH_Message;

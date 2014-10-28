@@ -43,46 +43,45 @@ void LeachWaveApplLayer::initialize(int stage) {
 
         numAssVector.setName("ON Associati");
         numCH.setName("CH time");
-        int_numch=0;
         numON.setName("ON time");
-        int_numon=0;
         numFN.setName("FN time");
-        int_numfn=0;
-        numturn.setName("turn");
 
         newTurn();
     }
 }
 
 void LeachWaveApplLayer::newTurn(){
-    collectStatistics();
+    collectStatistics(1);
     related.clear();
     if(nTurn%P_fraz==0){
         nextCHTurn = false;
     }
-    if(!nextCHTurn){
-        if(uniform(0,1) <= pCH/(1-pCH*(nTurn%P_fraz))){
-            par("Car_State").setStringValue("CH");
-            nextCHTurn = true;
-            sendWSM(prepareWSM("CH_MESSAGE", beaconLengthBits, type_CCH, beaconPriority, 0, -1));
-        }
+    if((!nextCHTurn) && (uniform(0,1) <= pCH/(1-pCH*(nTurn%P_fraz)))){
+        par("Car_State").setStringValue("CH");
+        nextCHTurn = true;
+        sendWSM(prepareWSM("CH_MESSAGE", beaconLengthBits, type_CCH, beaconPriority, 0, -1));
     }else{
         par("Car_State").setStringValue("FN");
     }
     nTurn++;
 }
 
-void LeachWaveApplLayer::collectStatistics(){
+void LeachWaveApplLayer::collectStatistics(int what){
     if (simTime() >= simulation.getWarmupPeriod()){
-        if(std::string(par("Car_State").stringValue())=="CH") {
-            numAssVector.record(related.size());
-            int_numch++;
-        }else{
-            if(std::string(par("Car_State").stringValue())=="ON") {
-                int_numon++;
-            }else{
-                int_numfn++;
-            }
+        switch (what){
+            case 1:
+                if (std::string(par("Car_State").stringValue())=="CH"){
+                    numAssVector.record(related.size());
+                }
+                break;
+            case 2:
+                if(std::string(par("Car_State").stringValue())=="CH") {
+                    numCH.record(1);
+                }else if(std::string(par("Car_State").stringValue())=="ON") {
+                    numON.record(1);
+                }else{
+                    numFN.record(1);
+                }
         }
     }
 }
@@ -120,6 +119,11 @@ void LeachWaveApplLayer::receiveSignal(cComponent* source, simsignal_t signalID,
     Enter_Method_Silent();
     if (signalID == mobilityStateChangedSignal) {
         handlePositionUpdate(obj);
+        double campTime;
+        campTime=P_fraz/2;
+        if(fmod(simTime().dbl(),campTime)==0){
+            collectStatistics(2);
+        }
     }
 }
 
@@ -172,11 +176,7 @@ void LeachWaveApplLayer::sendWSM(WaveShortMessage* wsm) {
 }
 
 void LeachWaveApplLayer::finish() {
-    collectStatistics();
-    numCH.record(int_numch);
-    numON.record(int_numon);
-    numFN.record(int_numfn);
-    numturn.record(nTurn);
+    collectStatistics(1);
     if (T_Turn->isScheduled()) {
         cancelAndDelete(T_Turn);
     }
