@@ -29,6 +29,20 @@ class LeachWaveApplLayer : public BaseApplLayer {
            ASSOCIATION_REQUEST,
        };
 
+       class Statistics {
+           public:
+               cOutVector numAssVector;
+               cOutVector numCH;
+               cOutVector numON;
+               cOutVector numFN;
+               cOutVector xCoord;
+               cOutVector yCoord;
+
+               void initialize();
+               void watch(cSimpleModule& module);
+               void recordScalars(cSimpleModule& module);
+       };
+
     protected:
 
        static const simsignalwrap_t mobilityStateChangedSignal;
@@ -65,13 +79,9 @@ class LeachWaveApplLayer : public BaseApplLayer {
        bool nextCHTurn;
        double pCH;
        int P_fraz;
+
        std::vector<int> related;
-
-       cOutVector numAssVector;
-       cOutVector numCH;
-       cOutVector numON;
-       cOutVector numFN;
-
+       Statistics statistic;
 
        cMessage* T_Turn;
        cMessage* CH_Message;

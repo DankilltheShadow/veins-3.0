@@ -2,6 +2,16 @@
 
 const simsignalwrap_t LeachWaveApplLayer::mobilityStateChangedSignal = simsignalwrap_t(MIXIM_SIGNAL_MOBILITY_CHANGE_NAME);
 
+void LeachWaveApplLayer::Statistics::initialize()
+{
+    numAssVector.setName("#ON Associati");
+    numCH.setName("CH state");
+    numON.setName("ON state");
+    numFN.setName("FN state");
+    xCoord.setName("Posizione x");
+    yCoord.setName("Posizione y");
+}
+
 void LeachWaveApplLayer::initialize(int stage) {
     BaseApplLayer::initialize(stage);
 
@@ -41,10 +51,7 @@ void LeachWaveApplLayer::initialize(int stage) {
 
         scheduleAt(simTime() + offSet, T_Turn);
 
-        numAssVector.setName("ON Associati");
-        numCH.setName("CH time");
-        numON.setName("ON time");
-        numFN.setName("FN time");
+        statistic.initialize();
 
         newTurn();
     }
@@ -71,17 +78,21 @@ void LeachWaveApplLayer::collectStatistics(int what){
         switch (what){
             case 1:
                 if (std::string(par("Car_State").stringValue())=="CH"){
-                    numAssVector.record(related.size());
+                    statistic.numAssVector.record(related.size());
+                    statistic.xCoord.record(this->curPosition.x);
+                    statistic.yCoord.record(this->curPosition.y);
                 }
                 break;
             case 2:
                 if(std::string(par("Car_State").stringValue())=="CH") {
-                    numCH.record(1);
+                    statistic.numCH.record(1);
                 }else if(std::string(par("Car_State").stringValue())=="ON") {
-                    numON.record(1);
+                    statistic.numON.record(1);
                 }else{
-                    numFN.record(1);
+                    statistic.numFN.record(1);
                 }
+                statistic.xCoord.record(this->curPosition.x);
+                statistic.yCoord.record(this->curPosition.y);
         }
     }
 }
@@ -119,9 +130,8 @@ void LeachWaveApplLayer::receiveSignal(cComponent* source, simsignal_t signalID,
     Enter_Method_Silent();
     if (signalID == mobilityStateChangedSignal) {
         handlePositionUpdate(obj);
-        double campTime;
-        campTime=P_fraz/2;
-        if(fmod(simTime().dbl(),campTime)==0){
+        double epsilon=0.1;
+        if(fmod(simTime().dbl(),(par("beaconInterval").doubleValue()/2))<epsilon){
             collectStatistics(2);
         }
     }
