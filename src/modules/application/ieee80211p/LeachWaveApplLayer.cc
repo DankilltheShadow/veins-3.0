@@ -4,7 +4,7 @@ const simsignalwrap_t LeachWaveApplLayer::mobilityStateChangedSignal = simsignal
 
 void LeachWaveApplLayer::Statistics::initialize()
 {
-    numAssVector.setName("#ON Associati");
+    numAssVector.setName("ON Associati");
     numCH.setName("CH state");
     numON.setName("ON state");
     numFN.setName("FN state");
