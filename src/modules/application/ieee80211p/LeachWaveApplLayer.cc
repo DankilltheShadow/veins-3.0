@@ -130,8 +130,9 @@ void LeachWaveApplLayer::receiveSignal(cComponent* source, simsignal_t signalID,
     Enter_Method_Silent();
     if (signalID == mobilityStateChangedSignal) {
         handlePositionUpdate(obj);
-        double epsilon=0.1;
-        if(fmod(simTime().dbl(),(par("beaconInterval").doubleValue()/2))<epsilon){
+        //double epsilon=0.1; mettere la epsilon in caso di errori di precisione nel calcolo del modulo
+        //if(fmod(simTime().dbl(),(par("beaconInterval").doubleValue()/2))<epsilon){
+        if(fmod(simTime().dbl(),(par("beaconInterval").doubleValue()/2))==0){
             collectStatistics(2);
         }
     }
