@@ -3668,18 +3668,18 @@
 													"parentStyle": false,
 													"containerChangeable": false,
 													"containerExtending": true,
-													"left": 103,
+													"left": 99,
 													"top": 400,
 													"width": 310,
 													"height": 13,
 													"autoResize": false,
-													"alpha": 1.5707963267948966,
-													"distance": 10,
+													"alpha": 1.1071495177944106,
+													"distance": 11.180339887498949,
 													"hostEdge": {
 														"$ref": "AAAAAAFJqdNRZ1oDM74="
 													},
 													"edgePosition": 1,
-													"text": "17 : ASSOCIATION_RESPONCE(Car_2, Car_1, resp)",
+													"text": "17 : ASSOCIATION_RESPONSE(Car_2, Car_1, resp)",
 													"horizontalAlignment": 2,
 													"verticalAlignment": 5
 												},
@@ -4089,7 +4089,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFJmkYoH+S1wmM="
 									},
-									"name": "ASSOCIATION_RESPONCE",
+									"name": "ASSOCIATION_RESPONSE",
 									"source": {
 										"$ref": "AAAAAAFJmkj1sOVMcVI="
 									},
