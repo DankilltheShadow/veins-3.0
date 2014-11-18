@@ -3,8 +3,7 @@ __author__ = 'Daniel'
 import pandas as pd
 import math
 import matplotlib.pyplot as plt
-import pylab
-import time as tm
+
 
 ###importazione dei dati######################
 df = pd.read_csv('..\\results\\nodebug-0.csv', header=0)
