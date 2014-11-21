@@ -7973,7 +7973,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFJmkWoYeSPVnI="
 							},
-							"name": "InterCluster",
+							"name": "InterCluster(NewCH)",
 							"ownedElements": [
 								{
 									"_type": "UMLSequenceDiagram",

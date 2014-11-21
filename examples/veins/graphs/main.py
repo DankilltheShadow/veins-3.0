@@ -3,6 +3,20 @@ __author__ = 'Daniel'
 import pandas as pd
 import math
 import matplotlib.pyplot as plt
+from pylab import *
+
+
+def flatten(seq):
+    l = []
+    for elt in seq:
+        t = type(elt)
+        if t is tuple or t is list:
+            for elt2 in flatten(elt):
+                if elt2 > 0:
+                    l.append(elt2)
+        else:
+            l.append(elt)
+    return l
 
 
 ###importazione dei dati######################
@@ -19,11 +33,13 @@ statestime_index = time.select(lambda x: math.fmod(time.iloc[x].sum(), (beaconin
 xcoord = df.filter(regex="Posizione x")
 ycoord = df.filter(regex="Posizione y")
 xcoordheat = xcoord.select(lambda x: x not in statestime_index)
-ycoordheat = ycoord.select(lambda x: x not in statestime_index)
-xcoordheat = [tuple(x) for x in xcoordheat.values]
-ycoordheat = [tuple(x) for x in ycoordheat.values]
+ycoordheat = ycoord.select(lambda y: y not in statestime_index)
+xcoordheat = flatten([tuple(z) for z in xcoordheat.values])
+ycoordheat = flatten([tuple(v) for v in ycoordheat.values])
+
+
 ##############################################
-plt.hist2d(xcoordheat, ycoordheat, cmap='Greens')
+plt.hist2d(xcoordheat, ycoordheat, bins=40)
 # figure = plt.figure()
 # id = 0
 # chsum = chstates.iloc[statestime_index[id]].sum()
