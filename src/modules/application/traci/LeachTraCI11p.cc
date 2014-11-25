@@ -38,7 +38,7 @@ void LeachTraCI11p::onBeacon(WaveShortMessage* wsm) {
 
 
     DBG << "Received beacon priority  " << wsm->getPriority() << " at " << simTime() << std::endl;
-    int senderId = wsm->getSenderAddress();
+    //int senderId = wsm->getSenderAddress();
 
     //if (sendData) {
     //    t_channel channel = dataOnSch ? type_SCH : type_CCH;
