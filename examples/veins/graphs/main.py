@@ -4,19 +4,7 @@ import pandas as pd
 import math
 import matplotlib.pyplot as plt
 from pylab import *
-
-
-def flatten(seq):
-    l = []
-    for elt in seq:
-        t = type(elt)
-        if t is tuple or t is list:
-            for elt2 in flatten(elt):
-                if elt2 > 0:
-                    l.append(elt2)
-        else:
-            l.append(elt)
-    return l
+from Utils import *
 
 
 ###importazione dei dati######################
@@ -40,6 +28,7 @@ ycoordheat = flatten([tuple(v) for v in ycoordheat.values])
 
 ##############################################
 plt.hist2d(xcoordheat, ycoordheat, bins=40)
+###########################PIE#################
 # figure = plt.figure()
 # id = 0
 # chsum = chstates.iloc[statestime_index[id]].sum()
