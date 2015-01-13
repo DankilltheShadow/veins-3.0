@@ -1,33 +1,11 @@
 __author__ = 'Daniel'
 
-import pandas as pd
-import math
-import matplotlib.pyplot as plt
-from pylab import *
-from Utils import *
 
-
-###importazione dei dati######################
-df = pd.read_csv('..\\results\\nodebug-0.csv', header=0)
-#df.fillna(0, inplace=True)
-df.rename(columns=lambda x: x.replace('RSUExampleScenario.node', 'Car'), inplace=True)
-df.rename(columns=lambda x: x.replace('appl/', ''), inplace=True)
-beaconinterval = 10  #frequenza di taglio per la raccolta di statistiche. E' il beaconInterval nel .ini
-time = df.filter(regex="X")
-chstates = df.filter(regex="CH state")
-onstates = df.filter(regex="ON state")
-fnstates = df.filter(regex="FN state")
-statestime_index = time.select(lambda x: math.fmod(time.iloc[x].sum(), (beaconinterval/2)) == 0).index.tolist()
-xcoord = df.filter(regex="Posizione x")
-ycoord = df.filter(regex="Posizione y")
-xcoordheat = xcoord.select(lambda x: x not in statestime_index)
-ycoordheat = ycoord.select(lambda y: y not in statestime_index)
-xcoordheat = flatten([tuple(z) for z in xcoordheat.values])
-ycoordheat = flatten([tuple(v) for v in ycoordheat.values])
+#########################mappa colore##############################
 
 
 ##############################################
-plt.hist2d(xcoordheat, ycoordheat, bins=40)
+##plt.hist2d(xcoordheat, ycoordheat, bins=40)
 ###########################PIE#################
 # figure = plt.figure()
 # id = 0
@@ -67,4 +45,4 @@ plt.hist2d(xcoordheat, ycoordheat, bins=40)
 #             event.canvas.draw()
 #
 # figure.canvas.mpl_connect('key_press_event', on_press)
-plt.show()
+#plt.show()
